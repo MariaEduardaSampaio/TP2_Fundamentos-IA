@@ -9,7 +9,7 @@ from src.utils.converter_col_to_graph import carregar_instancia_col
 from src.utils.generate_random_color import gerar_coloracao_aleatoria
 
 # Configuração do experimento
-GRAFO = "queen8_12"
+GRAFO = "DSJC1000.1"
 CAMINHO_INSTANCIA = f"src/graph_coloring_instances/{GRAFO}.col"
 cores = ["vermelho", "azul", "verde", "amarelo"]
 max_steps = 1000
