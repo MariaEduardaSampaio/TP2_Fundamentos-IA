@@ -1,5 +1,5 @@
 import random
-import copy
+import time
 from src.utils.count_conflitcts import contar_conflitos
 
 def first_improvement_rs(grafo, coloracao_inicial, cores, max_steps=1000):
@@ -9,7 +9,13 @@ def first_improvement_rs(grafo, coloracao_inicial, cores, max_steps=1000):
 
     vertices = list(grafo.graph.keys())
 
-    for _ in range(max_steps):
+    start_time = time.time()
+
+    steps_usados = 0
+
+    for step in range(1, max_steps + 1):
+        steps_usados = step
+
         v = random.choice(vertices)
 
         cor_atual = melhor_coloracao[v]
@@ -37,4 +43,6 @@ def first_improvement_rs(grafo, coloracao_inicial, cores, max_steps=1000):
             if melhor_conflitos == 0:
                 break
 
-    return melhor_coloracao, melhor_conflitos
+    elapsed_time = time.time() - start_time
+
+    return melhor_coloracao, melhor_conflitos, elapsed_time, steps_usados
