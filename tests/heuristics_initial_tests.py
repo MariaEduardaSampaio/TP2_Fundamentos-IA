@@ -1,4 +1,4 @@
-from src.heuristics.first_improvement_rs import first_improvement_rs
+from heuristics.algoritm_genetic import algoritmo_genetico
 from src.utils.count_conflitcts import contar_conflitos
 from src.utils.generate_random_color import gerar_coloracao_aleatoria
 from src.graph_coloring_instances.example_graph import Example
@@ -34,10 +34,10 @@ max_steps = 1000
 # print(coloracao_bi)
 
 # First Improvement - Random Search
-coloracao_firs, conflitos_firs = first_improvement_rs(Example, coloracao_inicial, cores, max_steps)
-print("\nFirst Improvement - Random Search (FI-RS):")
-print(f"Conflitos finais: {conflitos_firs}")
-print(coloracao_firs)
+#coloracao_firs, conflitos_firs = first_improvement_rs(Example, coloracao_inicial, cores, max_steps)
+#print("\nFirst Improvement - Random Search (FI-RS):")
+#print(f"Conflitos finais: {conflitos_firs}")
+#print(coloracao_firs)
 
 # # First Improvement - Any Conflict
 # coloracao_fi_ac, conflitos_fi_ac = first_improvement_ac(Example, coloracao_inicial, cores, max_steps)
@@ -55,3 +55,20 @@ print(coloracao_firs)
 # print("\nSimulated Annealing (SA):")
 # print(f"Conflitos finais: {conflitos_sa}")
 # print(coloracao_sa)
+
+# Parâmetros
+NUM_INDIVIDUOS = 100
+NUM_GERACOES = 500
+CORES = ["vermelho", "azul", "verde", "amarelo"]
+TAXA_MUTACAO = 0.05
+TEMPERATURA_INICIAL = 10
+TAXA_RESFRIAMENTO = 0.9
+
+# Execução
+print("--- Executando o Algoritmo Genético ---")
+coloracao_ga, conflitos_ga = algoritmo_genetico(Example, NUM_INDIVIDUOS, NUM_GERACOES, CORES, TAXA_MUTACAO, TEMPERATURA_INICIAL, TAXA_RESFRIAMENTO)
+
+# Impressão do resultado
+print("\n Algoritmo Genético (GA):")
+print(f"Conflitos finais: {conflitos_ga}")
+print(coloracao_ga)
