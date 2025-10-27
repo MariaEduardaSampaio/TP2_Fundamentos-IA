@@ -9,11 +9,11 @@ from src.utils.converter_col_to_graph import carregar_instancia_col
 from src.utils.generate_random_color import gerar_coloracao_aleatoria
 
 # Configuração do experimento
-GRAFO = "queen8_12"
+GRAFO = "queen5_5"
 CAMINHO_INSTANCIA = f"src/graph_coloring_instances/{GRAFO}.col"
 cores = ["vermelho", "azul", "verde", "amarelo"]
 max_steps = 1000
-num_execucoes = 100
+num_execucoes = 10
 
 # pasta de saída para figuras
 output_dir = "tests/reports/runtime/fi-rs"
@@ -34,14 +34,15 @@ for _ in range(num_execucoes):
     conflitos_iniciais = contar_conflitos(Graph, coloracao_inicial)
 
     # Parâmetros
-    NUM_INDIVIDUOS = 100
-    TAXA_MUTACAO = 0.01
-    TEMPERATURA_INICIAL = 10
+    NUM_INDIVIDUOS = 20
+    NUM_GERACOES = 100
+    TAXA_MUTACAO = 0.05
+    TEMPERATURA_INICIAL = 35
     TAXA_RESFRIAMENTO = 0.95
 
     melhor_coloracao, melhor_conflitos, elapsed_time, steps_usados = algoritmo_genetico(Graph, 
                                                     NUM_INDIVIDUOS, 
-                                                    max_steps, 
+                                                    NUM_GERACOES, 
                                                     cores, 
                                                     TAXA_MUTACAO,
                                                     TEMPERATURA_INICIAL, 
