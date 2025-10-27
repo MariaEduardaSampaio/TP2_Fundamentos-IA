@@ -35,9 +35,9 @@ for _ in range(num_execucoes):
 
     # Parâmetros
     NUM_INDIVIDUOS = 100
-    TAXA_MUTACAO = 0.05
+    TAXA_MUTACAO = 0.01
     TEMPERATURA_INICIAL = 10
-    TAXA_RESFRIAMENTO = 0.9
+    TAXA_RESFRIAMENTO = 0.95
 
     melhor_coloracao, melhor_conflitos, elapsed_time, steps_usados = algoritmo_genetico(Graph, 
                                                     NUM_INDIVIDUOS, 

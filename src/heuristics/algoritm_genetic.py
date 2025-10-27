@@ -36,6 +36,7 @@ def selecao_com_annealing(populacao, grafo, temperatura):
     # evite under/overflow: se temperatura for 0, tratar como seleção determinística do melhor
     if temperatura <= 0:
         return custos.index(min(custos))
+    
     pesos = [math.exp(-c / temperatura) for c in custos]
     soma = sum(pesos)
     if soma == 0:
@@ -73,15 +74,10 @@ def crossover(pai1, pai2):
 def mutation(individuo, cores, taxa_mutacao):
     
     # implemente a função 
-    novo = individuo.copy()
-    for v in list(novo.keys()):
+    for v in individuo:
         if random.random() < taxa_mutacao:
-            # evitar escolher mesma cor atual (opcional)
-            opcoes = [c for c in cores if c != novo[v]]
-            if not opcoes:
-                opcoes = cores
-            novo[v] = random.choice(opcoes)
-    return novo
+            individuo[v] = random.choice(cores)
+    return individuo
 
 def algoritmo_genetico(grafo, num_individuos, num_geracoes, cores, taxa_mutacao, temperatura_inicial, taxa_resfriamento): 
     populacao = criar_populacao_inicial(grafo, num_individuos, cores)
@@ -92,14 +88,13 @@ def algoritmo_genetico(grafo, num_individuos, num_geracoes, cores, taxa_mutacao,
     start_time = time.time()
 
     for geracao in range(num_geracoes):
-        # Avaliação da população
-        fitness_values = [calcula_fitness(ind, grafo) for ind in populacao]
-
-        # Atualiza o melhor indivíduo global
-        for i, f in enumerate(fitness_values):
-            if f > melhor_fitness:
-                melhor_fitness = f
-                melhor_individuo = populacao[i]
+       
+        # Avalia a população
+        for individuo in populacao:
+            fitness = calcula_fitness(individuo, grafo)
+            if fitness > melhor_fitness:
+                melhor_fitness = fitness
+                melhor_individuo = individuo
 
         print(f"Geração {geracao+1}: Melhor fitness = {melhor_fitness:.4f}")
 
