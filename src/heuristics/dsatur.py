@@ -70,7 +70,10 @@ def dsatur(grafo, cores_possiveis, max_steps=1000):
 
     # calcula conflitos finais
     conflitos_finais = contar_conflitos(grafo, coloracao)
-    
+
+    cores_usadas = set(c for c in coloracao.values() if c is not None)
+    num_cores_usadas = len(cores_usadas)
+
     elapsed_time = time.time() - inicio
 
-    return coloracao, conflitos_finais, elapsed_time, steps_usados
+    return coloracao, conflitos_finais, elapsed_time, steps_usados, num_cores_usadas

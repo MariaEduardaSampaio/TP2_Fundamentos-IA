@@ -47,25 +47,21 @@ conflitos_iniciais_lista = []
 conflitos_finais_lista = []
 steps_lista = []
 tempos_lista = []
+cores_usadas_lista = []
 
 for _ in range(num_execucoes):
     coloracao_inicial = gerar_coloracao_aleatoria(Graph, cores)
 
     conflitos_iniciais = contar_conflitos(Graph, coloracao_inicial)
-
-    melhor_coloracao, melhor_conflitos, elapsed_time, steps_usados = dsatur(
-        grafo=Graph,
-        cores_possiveis=cores,
-        max_steps=max_steps
-    )
+    (melhor_coloracao, melhor_conflitos, elapsed_time, steps_usados, num_cores_usadas) = dsatur(grafo=Graph, cores_possiveis=cores, max_steps=max_steps)
 
     conflitos_iniciais_lista.append(conflitos_iniciais)
     conflitos_finais_lista.append(melhor_conflitos)
     steps_lista.append(steps_usados)
     tempos_lista.append(elapsed_time)
+    cores_usadas_lista.append(num_cores_usadas)
 
-# Estatísticas resumidasF
-
+# Estatísticas resumidas
 def resumo_stats(nome, valores):
     arr = np.array(valores)
     stats = {
@@ -104,9 +100,9 @@ def anotar_estatisticas_boxplot(stats, x_text=1.2, delta=0.02):
 resumo_stats("Conflitos iniciais", conflitos_iniciais_lista)
 stats_conflitos = resumo_stats("Conflitos finais", conflitos_finais_lista)
 stats_tempo = resumo_stats("Tempo de execução (s)", tempos_lista)
+stats_cores = resumo_stats("Número de cores utilizadas", cores_usadas_lista)
 
 # Função auxiliar: ECDF (distribuição acumulada empírica)
-
 def plot_ecdf(valores, xlabel, ylabel, titulo, output_path):
     """
     Plota a ECDF (função distribuição acumulada empírica).
@@ -122,11 +118,9 @@ def plot_ecdf(valores, xlabel, ylabel, titulo, output_path):
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.title(titulo)
-    plt.tight_layout()
     plt.savefig(output_path, dpi=300)
 
 # Função auxiliar: scatter tempo x conflito
-
 def plot_scatter_tempo_conflitos(tempos, conflitos, titulo, output_path):
     """
     Cada ponto representa uma execução da heurística.
@@ -138,11 +132,20 @@ def plot_scatter_tempo_conflitos(tempos, conflitos, titulo, output_path):
     plt.xlabel("Tempo de execução (s)")
     plt.ylabel("Conflitos finais")
     plt.title(titulo)
-    plt.tight_layout()
+    plt.savefig(output_path, dpi=300)
+
+# Função auxiliar: boxplot genérico com anotação
+def plot_boxplot(valores, titulo, ylabel, stats, output_path, delta_anotacao, x_text=1.2):
+    arr = np.array(valores)
+    plt.figure()
+    plt.boxplot(arr, vert=True)
+    plt.ylabel(ylabel)
+    plt.title(titulo)
+    anotar_estatisticas_boxplot(stats, x_text=x_text, delta=delta_anotacao)
+    plt.xlim(0.5, 1.8)
     plt.savefig(output_path, dpi=300)
 
 # Gráfico 1: Distribuição acumulada dos conflitos finais
-
 plot_ecdf(
     conflitos_finais_lista,
     xlabel="Conflitos finais após DSATUR",
@@ -152,21 +155,17 @@ plot_ecdf(
 )
 
 # Gráfico 2: Boxplot dos conflitos finais
-
-vals_conflitos = np.array(conflitos_finais_lista)
-
-plt.figure()
-plt.boxplot(vals_conflitos, vert=True)
-plt.ylabel("Conflitos finais após DSATUR")
-plt.title("Boxplot dos conflitos finais (DSATUR)")
-
-anotar_estatisticas_boxplot(stats_conflitos, x_text=1.2, delta=1.0)
-
-plt.xlim(0.5, 1.8)
-plt.savefig(os.path.join(output_dir, f"{GRAFO}_dsatur_boxplot_conflitos.png"), dpi=300)
+plot_boxplot(
+    conflitos_finais_lista,
+    titulo="Boxplot dos conflitos finais (DSATUR)",
+    ylabel="Conflitos finais após DSATUR",
+    stats=stats_conflitos,
+    output_path=os.path.join(output_dir, f"{GRAFO}_dsatur_boxplot_conflitos.png"),
+    delta_anotacao=1.0,
+    x_text=1.2
+)
 
 # Gráfico 3: Distribuição acumulada do tempo de execução
-
 plot_ecdf(
     tempos_lista,
     xlabel="Tempo de execução (s)",
@@ -176,24 +175,41 @@ plot_ecdf(
 )
 
 # Gráfico 4: Boxplot do tempo de execução
-
-vals_tempo = np.array(tempos_lista)
-
-plt.figure()
-plt.boxplot(vals_tempo, vert=True)
-plt.ylabel("Tempo de execução (s)")
-plt.title("Boxplot do tempo de execução (FI-RS)")
-
-anotar_estatisticas_boxplot(stats_tempo, x_text=1.2, delta=0.0005)
-
-plt.xlim(0.5, 1.8)
-plt.savefig(os.path.join(output_dir, f"{GRAFO}_dsatur_boxplot_tempo.png"), dpi=300)
+plot_boxplot(
+    tempos_lista,
+    titulo="Boxplot do tempo de execução (DSATUR)",
+    ylabel="Tempo de execução (s)",
+    stats=stats_tempo,
+    output_path=os.path.join(output_dir, f"{GRAFO}_dsatur_boxplot_tempo.png"),
+    delta_anotacao=0.0005,
+    x_text=1.2
+)
 
 # Gráfico 5: Dispersão tempo x conflitos finais
-
 plot_scatter_tempo_conflitos(
     tempos_lista,
     conflitos_finais_lista,
     titulo="Relação entre tempo de execução e conflitos finais (DSATUR)",
     output_path=os.path.join(output_dir, f"{GRAFO}_dsatur_scatter_tempo_vs_conflitos.png")
 )
+
+# Gráfico 6 (opcional mas útil no relatório): distribuição do número de cores usadas
+plot_ecdf(
+    cores_usadas_lista,
+    xlabel="Número de cores utilizadas",
+    ylabel="Proporção de execuções ≤ k",
+    titulo="Distribuição acumulada do número de cores (DSATUR)",
+    output_path=os.path.join(output_dir, f"{GRAFO}_dsatur_ecdf_cores.png")
+)
+
+plot_boxplot(
+    cores_usadas_lista,
+    titulo="Boxplot do número de cores utilizadas (DSATUR)",
+    ylabel="Número de cores utilizadas",
+    stats=stats_cores,
+    output_path=os.path.join(output_dir, f"{GRAFO}_dsatur_boxplot_cores.png"),
+    delta_anotacao=0.2,
+    x_text=1.2
+)
+
+print("Experimento finalizado.")
