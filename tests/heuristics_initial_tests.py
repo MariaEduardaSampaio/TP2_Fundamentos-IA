@@ -1,3 +1,4 @@
+from src.heuristics.dsatur import dsatur
 from src.heuristics.best_improvement import best_improvement
 from src.heuristics.random_walk import random_walk
 from src.heuristics.first_improvement_rs import first_improvement_rs
@@ -57,3 +58,9 @@ print(coloracao_firs)
 # print("\nSimulated Annealing (SA):")
 # print(f"Conflitos finais: {conflitos_sa}")
 # print(coloracao_sa)
+
+# DSATUR
+coloracao_firs, conflitos_firs, _, _ = dsatur(Example, coloracao_inicial, cores, max_steps)
+print("\nDSATUR:")
+print(f"Conflitos finais: {conflitos_firs}")
+print(coloracao_firs)

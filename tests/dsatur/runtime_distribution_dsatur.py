@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from src.utils.count_conflitcts import contar_conflitos
-from src.heuristics.best_improvement import best_improvement
+from src.heuristics.dsatur import dsatur
 from src.utils.converter_col_to_graph import carregar_instancia_col
 from src.utils.generate_random_color import gerar_coloracao_aleatoria
 
@@ -15,7 +15,7 @@ max_steps = 1000
 num_execucoes = 100
 
 # pasta de saída para figuras
-output_dir = "tests/bi/reports/runtime"
+output_dir = "tests/dsatur/reports/runtime"
 os.makedirs(output_dir, exist_ok=True)
 
 # carrega grafo
@@ -32,7 +32,7 @@ for _ in range(num_execucoes):
 
     conflitos_iniciais = contar_conflitos(Graph, coloracao_inicial)
 
-    melhor_coloracao, melhor_conflitos, elapsed_time, steps_usados = best_improvement(
+    melhor_coloracao, melhor_conflitos, elapsed_time, steps_usados = dsatur(
         grafo=Graph,
         coloracao_inicial=coloracao_inicial,
         cores=cores,
@@ -125,10 +125,10 @@ def plot_scatter_tempo_conflitos(tempos, conflitos, titulo, output_path):
 
 plot_ecdf(
     conflitos_finais_lista,
-    xlabel="Conflitos finais após BI",
+    xlabel="Conflitos finais após DSATUR",
     ylabel="Proporção de execuções ≤ x",
-    titulo="Distribuição acumulada dos conflitos finais (BI)",
-    output_path=os.path.join(output_dir, f"{GRAFO}_bi_ecdf_conflitos.png")
+    titulo="Distribuição acumulada dos conflitos finais (DSATUR)",
+    output_path=os.path.join(output_dir, f"{GRAFO}_dsatur_ecdf_conflitos.png")
 )
 
 # Gráfico 2: Boxplot dos conflitos finais
@@ -137,14 +137,14 @@ vals_conflitos = np.array(conflitos_finais_lista)
 
 plt.figure()
 plt.boxplot(vals_conflitos, vert=True)
-plt.ylabel("Conflitos finais após BI")
-plt.title("Boxplot dos conflitos finais (BI)")
+plt.ylabel("Conflitos finais após DSATUR")
+plt.title("Boxplot dos conflitos finais (DSATUR)")
 
 anotar_estatisticas_boxplot(stats_conflitos, x_text=1.2, delta=1.0)
 
 plt.xlim(0.5, 1.8)
 plt.tight_layout()
-plt.savefig(os.path.join(output_dir, f"{GRAFO}_bi_boxplot_conflitos.png"), dpi=300)
+plt.savefig(os.path.join(output_dir, f"{GRAFO}_dsatur_boxplot_conflitos.png"), dpi=300)
 
 # Gráfico 3: Distribuição acumulada do tempo de execução
 
@@ -152,8 +152,8 @@ plot_ecdf(
     tempos_lista,
     xlabel="Tempo de execução (s)",
     ylabel="Proporção de execuções ≤ t",
-    titulo="Distribuição acumulada do tempo de execução (BI)",
-    output_path=os.path.join(output_dir, f"{GRAFO}_bi_ecdf_tempo.png")
+    titulo="Distribuição acumulada do tempo de execução (DSATUR)",
+    output_path=os.path.join(output_dir, f"{GRAFO}_dsatur_ecdf_tempo.png")
 )
 
 # Gráfico 4: Boxplot do tempo de execução
@@ -169,13 +169,13 @@ anotar_estatisticas_boxplot(stats_tempo, x_text=1.2, delta=0.0005)
 
 plt.xlim(0.5, 1.8)
 plt.tight_layout()
-plt.savefig(os.path.join(output_dir, f"{GRAFO}_bi_boxplot_tempo.png"), dpi=300)
+plt.savefig(os.path.join(output_dir, f"{GRAFO}_dsatur_boxplot_tempo.png"), dpi=300)
 
 # Gráfico 5: Dispersão tempo x conflitos finais
 
 plot_scatter_tempo_conflitos(
     tempos_lista,
     conflitos_finais_lista,
-    titulo="Relação entre tempo de execução e conflitos finais (BI)",
-    output_path=os.path.join(output_dir, f"{GRAFO}_bi_scatter_tempo_vs_conflitos.png")
+    titulo="Relação entre tempo de execução e conflitos finais (DSATUR)",
+    output_path=os.path.join(output_dir, f"{GRAFO}_dsatur_scatter_tempo_vs_conflitos.png")
 )
