@@ -1,3 +1,5 @@
+from src.heuristics.best_improvement import best_improvement
+from src.heuristics.random_walk import random_walk
 from src.heuristics.first_improvement_rs import first_improvement_rs
 from src.utils.count_conflitcts import contar_conflitos
 from src.utils.generate_random_color import gerar_coloracao_aleatoria
@@ -21,20 +23,20 @@ print("\n--- Aplicando heurísticas ---\n")
 # define o número máximo de passos de execução para cada heurística de busca local
 max_steps = 1000
 
-# # Random Walk
-# coloracao_rw, conflitos_rw = random_walk(Example, coloracao_inicial, cores, max_steps)
-# print("Random Walk (RW):")
-# print(f"Conflitos finais: {conflitos_rw}")
-# print(coloracao_rw)
+# Random Walk
+coloracao_rw, conflitos_rw, _, _ = random_walk(Example, coloracao_inicial, cores, max_steps)
+print("Random Walk (RW):")
+print(f"Conflitos finais: {conflitos_rw}")
+print(coloracao_rw)
 
-# # Best Improvement
-# coloracao_bi, conflitos_bi = best_improvement(Example, coloracao_inicial, cores, max_steps)
-# print("\nBest Improvement (BI):")
-# print(f"Conflitos finais: {conflitos_bi}")
-# print(coloracao_bi)
+# Best Improvement
+coloracao_bi, conflitos_bi, _, _ = best_improvement(Example, coloracao_inicial, cores, max_steps)
+print("\nBest Improvement (BI):")
+print(f"Conflitos finais: {conflitos_bi}")
+print(coloracao_bi)
 
 # First Improvement - Random Search
-coloracao_firs, conflitos_firs = first_improvement_rs(Example, coloracao_inicial, cores, max_steps)
+coloracao_firs, conflitos_firs, _, _ = first_improvement_rs(Example, coloracao_inicial, cores, max_steps)
 print("\nFirst Improvement - Random Search (FI-RS):")
 print(f"Conflitos finais: {conflitos_firs}")
 print(coloracao_firs)

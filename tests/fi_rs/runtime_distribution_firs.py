@@ -1,5 +1,4 @@
 import os
-import random
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -9,14 +8,14 @@ from src.utils.converter_col_to_graph import carregar_instancia_col
 from src.utils.generate_random_color import gerar_coloracao_aleatoria
 
 # Configuração do experimento
-GRAFO = "DSJC1000.1"
+GRAFO = "huck"
 CAMINHO_INSTANCIA = f"src/graph_coloring_instances/{GRAFO}.col"
 cores = ["vermelho", "azul", "verde", "amarelo"]
 max_steps = 1000
 num_execucoes = 100
 
 # pasta de saída para figuras
-output_dir = "tests/reports/runtime/fi-rs"
+output_dir = "tests/fi_rs/reports/runtime"
 os.makedirs(output_dir, exist_ok=True)
 
 # carrega grafo
