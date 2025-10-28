@@ -10,7 +10,28 @@ from src.utils.generate_random_color import gerar_coloracao_aleatoria
 # Configuração do experimento
 GRAFO = "huck"
 CAMINHO_INSTANCIA = f"src/graph_coloring_instances/{GRAFO}.col"
-cores = ["vermelho", "azul", "verde", "amarelo"]
+cores = [
+    "vermelho", "azul", "verde", "amarelo", "roxo", "laranja", "rosa",
+    "marrom", "cinza", "preto", "branco", "turquesa", "ciano", "magenta",
+    "bege", "lilás", "violeta", "dourado", "prata", "salmao", "verde_agua",
+    "caramelo", "amendoa", "creme", "oliva", "azul_claro", "azul_escuro",
+    "vermelho_escuro", "roxo_claro", "rosa_choque", "mostarda", "chumbo",
+    "verde_musgo", "fucsia", "pessego", "coral", "jade", "aqua", "vinho",
+    "lavanda", "branco_gelo", "marfim", "marinho", "verde_limao",
+    "grafite", "cinza_claro", "rosa_bebe", "azul_celeste", "terracota",
+    "ouro", "bronze", "verde_bandeira", "azul_petroleo", "vermelho_tijolo",
+    "amarelo_canario", "rosa_antigo", "verde_pastel", "azul_pastel",
+    "azul_turquesa", "violeta_escuro", "menta", "azul_bebe", "pardo",
+    "verde_lago", "ameixa", "verde_esmeralda", "marfim_claro", "cinza_ardosia",
+    "ocre", "carmesim", "azul_real", "verde_menta", "amarelo_palha",
+    "verde_militar", "azul_acizentado", "azul_anil", "rosa_salmao",
+    "verde_neon", "azul_neon", "laranja_queimado", "roxo_vivo",
+    "azul_tiffany", "amarelo_ouro", "amarelo_neon", "verde_claro",
+    "vermelho_vivo", "roxo_pastel", "azul_petróleo", "verde_mint",
+    "azul_acinzentado", "marrom_claro", "azul_marinho", "rosa_neon",
+    "amarelo_forte", "amarelo_dourado", "violeta_forte", "cinza_prata",
+    "azul_lago", "amarelo_pastel", "azul_forte", "verde_grama", "rosa_palido"
+]
 max_steps = 1000
 num_execucoes = 100
 
@@ -34,9 +55,8 @@ for _ in range(num_execucoes):
 
     melhor_coloracao, melhor_conflitos, elapsed_time, steps_usados = dsatur(
         grafo=Graph,
-        coloracao_inicial=coloracao_inicial,
-        cores=cores,
-        max_iter=max_steps
+        cores_possiveis=cores,
+        max_steps=max_steps
     )
 
     conflitos_iniciais_lista.append(conflitos_iniciais)
@@ -143,7 +163,6 @@ plt.title("Boxplot dos conflitos finais (DSATUR)")
 anotar_estatisticas_boxplot(stats_conflitos, x_text=1.2, delta=1.0)
 
 plt.xlim(0.5, 1.8)
-plt.tight_layout()
 plt.savefig(os.path.join(output_dir, f"{GRAFO}_dsatur_boxplot_conflitos.png"), dpi=300)
 
 # Gráfico 3: Distribuição acumulada do tempo de execução
@@ -168,7 +187,6 @@ plt.title("Boxplot do tempo de execução (FI-RS)")
 anotar_estatisticas_boxplot(stats_tempo, x_text=1.2, delta=0.0005)
 
 plt.xlim(0.5, 1.8)
-plt.tight_layout()
 plt.savefig(os.path.join(output_dir, f"{GRAFO}_dsatur_boxplot_tempo.png"), dpi=300)
 
 # Gráfico 5: Dispersão tempo x conflitos finais

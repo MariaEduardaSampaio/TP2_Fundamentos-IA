@@ -60,7 +60,7 @@ print(coloracao_firs)
 # print(coloracao_sa)
 
 # DSATUR
-coloracao_firs, conflitos_firs, _, _ = dsatur(Example, coloracao_inicial, cores, max_steps)
+coloracao_firs, conflitos_firs, _, _ = dsatur(Example, cores, max_steps)
 print("\nDSATUR:")
 print(f"Conflitos finais: {conflitos_firs}")
 print(coloracao_firs)

@@ -1,7 +1,7 @@
 import time
 from src.utils.count_conflitcts import contar_conflitos
 
-def dsatur(grafo, coloracao_inicial, cores_possiveis, max_steps=1000):
+def dsatur(grafo, cores_possiveis, max_steps=1000):
     inicio = time.time()
 
     vertices = list(grafo.graph.keys())
@@ -70,7 +70,7 @@ def dsatur(grafo, coloracao_inicial, cores_possiveis, max_steps=1000):
 
     # calcula conflitos finais
     conflitos_finais = contar_conflitos(grafo, coloracao)
-
+    
     elapsed_time = time.time() - inicio
 
     return coloracao, conflitos_finais, elapsed_time, steps_usados
