@@ -13,10 +13,10 @@ GRAFO = "queen5_5"
 CAMINHO_INSTANCIA = f"src/graph_coloring_instances/{GRAFO}.col"
 cores = ["vermelho", "azul", "verde", "amarelo"]
 max_steps = 1000
-num_execucoes = 10
+num_execucoes = 100
 
 # pasta de saída para figuras
-output_dir = "tests/reports/runtime/fi-rs"
+output_dir = "tests/reports/runtime/GA"
 os.makedirs(output_dir, exist_ok=True)
 
 # carrega grafo
@@ -134,10 +134,10 @@ def plot_scatter_tempo_conflitos(tempos, conflitos, titulo, output_path):
 
 plot_ecdf(
     conflitos_finais_lista,
-    xlabel="Conflitos finais após FI-RS",
+    xlabel="Conflitos finais após GA",
     ylabel="Proporção de execuções ≤ x",
-    titulo="Distribuição acumulada dos conflitos finais (FI-RS)",
-    output_path=os.path.join(output_dir, f"{GRAFO}_firs_ecdf_conflitos.png")
+    titulo="Distribuição acumulada dos conflitos finais (GA)",
+    output_path=os.path.join(output_dir, f"{GRAFO}_ga_ecdf_conflitos.png")
 )
 
 # Gráfico 2: Boxplot dos conflitos finais
@@ -146,14 +146,14 @@ vals_conflitos = np.array(conflitos_finais_lista)
 
 plt.figure()
 plt.boxplot(vals_conflitos, vert=True)
-plt.ylabel("Conflitos finais após FI-RS")
-plt.title("Boxplot dos conflitos finais (FI-RS)")
+plt.ylabel("Conflitos finais após GA")
+plt.title("Boxplot dos conflitos finais (GA)")
 
 anotar_estatisticas_boxplot(stats_conflitos, x_text=1.2, delta=1.0)
 
 plt.xlim(0.5, 1.8)
 plt.tight_layout()
-plt.savefig(os.path.join(output_dir, f"{GRAFO}_firs_boxplot_conflitos.png"), dpi=300)
+plt.savefig(os.path.join(output_dir, f"{GRAFO}_ga_boxplot_conflitos.png"), dpi=300)
 
 # Gráfico 3: Distribuição acumulada do tempo de execução
 
@@ -161,8 +161,8 @@ plot_ecdf(
     tempos_lista,
     xlabel="Tempo de execução (s)",
     ylabel="Proporção de execuções ≤ t",
-    titulo="Distribuição acumulada do tempo de execução (FI-RS)",
-    output_path=os.path.join(output_dir, f"{GRAFO}_firs_ecdf_tempo.png")
+    titulo="Distribuição acumulada do tempo de execução (GA)",
+    output_path=os.path.join(output_dir, f"{GRAFO}_ga_ecdf_tempo.png")
 )
 
 # Gráfico 4: Boxplot do tempo de execução
@@ -172,19 +172,19 @@ vals_tempo = np.array(tempos_lista)
 plt.figure()
 plt.boxplot(vals_tempo, vert=True)
 plt.ylabel("Tempo de execução (s)")
-plt.title("Boxplot do tempo de execução (FI-RS)")
+plt.title("Boxplot do tempo de execução (GA)")
 
 anotar_estatisticas_boxplot(stats_tempo, x_text=1.2, delta=0.0005)
 
 plt.xlim(0.5, 1.8)
 plt.tight_layout()
-plt.savefig(os.path.join(output_dir, f"{GRAFO}_firs_boxplot_tempo.png"), dpi=300)
+plt.savefig(os.path.join(output_dir, f"{GRAFO}_ga_boxplot_tempo.png"), dpi=300)
 
 # Gráfico 5: Dispersão tempo x conflitos finais
 
 plot_scatter_tempo_conflitos(
     tempos_lista,
     conflitos_finais_lista,
-    titulo="Relação entre tempo de execução e conflitos finais (FI-RS)",
-    output_path=os.path.join(output_dir, f"{GRAFO}_firs_scatter_tempo_vs_conflitos.png")
+    titulo="Relação entre tempo de execução e conflitos finais (GA)",
+    output_path=os.path.join(output_dir, f"{GRAFO}_ga_scatter_tempo_vs_conflitos.png")
 )

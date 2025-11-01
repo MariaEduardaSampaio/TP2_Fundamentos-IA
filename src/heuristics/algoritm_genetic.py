@@ -10,27 +10,24 @@ from src.utils.count_conflitcts import contar_conflitos
 
 # Gera a população inicial de indivíduos com colorações aleatórias.
 def criar_populacao_inicial(grafo, num_individuos, cores_disponiveis):
-    
     # implemente a função
     populacao = []
     vertices = list(grafo.graph.keys())
     for _ in range(num_individuos):
         coloracao = {v: random.choice(cores_disponiveis) for v in vertices}
         populacao.append(coloracao)
-    # a populacao pode ser modelada como uma lista de colorações aleatórias
     return populacao
 
 # Calcula o fitness de um indivíduo usando a função contar_conflitos(grafo, coloracao).  
 def calcula_fitness(individuo, grafo):
     # implemente a função
     conflitos = contar_conflitos(grafo, individuo)
-    fitness = 1 / (1 + conflitos)  # evitar divisão por zero
+    fitness = 1 / (1 + conflitos) 
     return fitness
 
 #  Seleção com probabilidade proporcional a e^(-h(A)/temperatura).
 #  O 'custo' h(A) é o número de conflitos.  
 def selecao_com_annealing(populacao, grafo, temperatura):
-
     # implemente a função
     custos = [contar_conflitos(grafo, ind) for ind in populacao]  # h(A) = conflitos
     # evite under/overflow: se temperatura for 0, tratar como seleção determinística do melhor
@@ -47,10 +44,8 @@ def selecao_com_annealing(populacao, grafo, temperatura):
     # retorna o indice do individuo selecionado
     return individuo_selecionado
 
-
 # Faz o cruzamento de um ponto entre dois indivíduos (pai1 e pai2).
 def crossover(pai1, pai2):
-    
     # Seleciona um ponto de corte aleatório.
     # complete o codigo
     vertices = list(pai1.keys())
@@ -72,7 +67,6 @@ def crossover(pai1, pai2):
 
 # Escolhe aleatoriamente um vértice do indivíduo e muda sua cor aleatoriamente com probabilidade = taxa_mutacao.
 def mutation(individuo, cores, taxa_mutacao):
-    
     # implemente a função 
     for v in individuo:
         if random.random() < taxa_mutacao:
@@ -82,13 +76,11 @@ def mutation(individuo, cores, taxa_mutacao):
 def algoritmo_genetico(grafo, num_individuos, num_geracoes, cores, taxa_mutacao, temperatura_inicial, taxa_resfriamento): 
     populacao = criar_populacao_inicial(grafo, num_individuos, cores)
     temperatura = temperatura_inicial 
-
     melhor_individuo = None
     melhor_fitness = -float("inf")  # inicializa com o pior valor possível
     start_time = time.time()
 
     for geracao in range(num_geracoes):
-       
         # Avalia a população
         for individuo in populacao:
             fitness = calcula_fitness(individuo, grafo)
@@ -97,15 +89,13 @@ def algoritmo_genetico(grafo, num_individuos, num_geracoes, cores, taxa_mutacao,
                 melhor_individuo = individuo
 
         print(f"Geração {geracao+1}: Melhor fitness = {melhor_fitness:.4f}")
-
         # Se não há conflitos, encontrou solução ótima
         if contar_conflitos(grafo, melhor_individuo) == 0:
             print("\n✅ Solução ótima encontrada!")
             elapsed_time = time.time() - start_time
-            return melhor_individuo, 0,elapsed_time, geracao
+            return melhor_individuo, 0, elapsed_time, geracao
 
         nova_populacao = []
-
         for _ in range(num_individuos // 2):
             idx1 = selecao_com_annealing(populacao, grafo, temperatura)
             idx2 = selecao_com_annealing(populacao, grafo, temperatura)
@@ -116,7 +106,6 @@ def algoritmo_genetico(grafo, num_individuos, num_geracoes, cores, taxa_mutacao,
             filho2 = mutation(filho2, cores, taxa_mutacao)
 
             nova_populacao.extend([filho1, filho2])
-
         populacao = nova_populacao
         temperatura *= taxa_resfriamento  # resfriamento gradual
     
